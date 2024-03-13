@@ -76,7 +76,7 @@ Read counting is done by FeatureCounts.
     such as squeue, scontrol show job <job-id>, and check the log files
     generated.
 
-**Notes:** Find test data in UCloud at the FGM project (Utilities/Example_data/bulkRNA/Fastq)
+**Notes:** Find test data in UCloud at the FGM project (Utilities/Example_data/bulkATAC/Fastq)
 
 ## Contributing
 If you find mistakes, errors, or just have suggestions, please create an issue here on GitHub.
