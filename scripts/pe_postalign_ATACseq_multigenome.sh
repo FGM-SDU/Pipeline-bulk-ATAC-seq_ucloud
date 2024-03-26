@@ -178,8 +178,8 @@ BAM_FILE_CHR_FILETERED_TMP="$(basename "${RAW_BAM_FILE}" bam)filt_contigs.bam"
 FINGERPRINTS="$(basename "${RAW_BAM_FILE}" bam)qc.fingerprints.txt" # QC file
 CHART_FINGERPRINTS="$(basename "${RAW_BAM_FILE}" bam)qc.fingerprints.png" # QC graph
 CHART_COVERAGE="$(basename "${RAW_BAM_FILE}" bam)qc.coveragePlot.png" # QC graph
-BIGWIG_COVERAGE_PER_BASE="$(basename "${RAW_BAM_FILE}" bam)nodup.bs1.bw"
-BIGWIG_COVERAGE_BIN="$(basename "${RAW_BAM_FILE}" bam)nodup.bs10.bw"
+BIGWIG_COVERAGE_PER_BASE="$(basename "${RAW_BAM_FILE}" bam)nodup.bs1.bw" # Bigwig from BAM file without duplicates. Bin size 1
+BIGWIG_COVERAGE_BIN="$(basename "${RAW_BAM_FILE}" bam)nodup.bs10.bw" # Bigwig from BAM file without duplicates. Bin size 10. Normalization RPKM
 ESTIMATE_READ_FILTERING="$(basename "${RAW_BAM_FILE}" bam)qc.estimatereadfiltering.txt" # QC file
 MATRIX_SCALED_GENES="$(basename "${RAW_BAM_FILE}" bam)qc.matrix.scaled.gz"
 PLOTPROFILE_DATA="$(basename "${RAW_BAM_FILE}" bam)qc.plotprofile.txt" # QC file
@@ -216,11 +216,11 @@ BAM_MN_INDEX_FILE="$(basename "${RAW_BAM_FILE}" bam)nodup.MN.bai"
 NMSRT_BAM_NFR="$(basename "${RAW_BAM_FILE}" bam)nmsrt.nodup.NFR.bam"
 
 
-BIGWIG_COVERAGE_PER_BASE_NFR="$(basename "${RAW_BAM_FILE}" bam)NFR.bs1.bw"
-BIGWIG_COVERAGE_BIN_NFR="$(basename "${RAW_BAM_FILE}" bam)NFR.bs10.bw"
+BIGWIG_COVERAGE_PER_BASE_NFR="$(basename "${RAW_BAM_FILE}" bam)NFR.bs1.bw" # nuclesome-free. Bin size 1 
+BIGWIG_COVERAGE_BIN_NFR="$(basename "${RAW_BAM_FILE}" bam)NFR.bs10.bw"  # nuclesome-free. Bin size 10. Normalization RPKM 
 
-BIGWIG_COVERAGE_PER_BASE_MN="$(basename "${RAW_BAM_FILE}" bam)MN.bs1.bw"
-BIGWIG_COVERAGE_BIN_MN="$(basename "${RAW_BAM_FILE}" bam)MN.bs10.bw"
+BIGWIG_COVERAGE_PER_BASE_MN="$(basename "${RAW_BAM_FILE}" bam)MN.bs1.bw" # mono-nuclesome. Bin size 1 
+BIGWIG_COVERAGE_BIN_MN="$(basename "${RAW_BAM_FILE}" bam)MN.bs10.bw"  # mono-nuclesome. Bin size 10. Normalization RPKM 
 
 # ===============================================
 # Flagstat

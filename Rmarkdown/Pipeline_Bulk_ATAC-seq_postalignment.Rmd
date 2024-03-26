@@ -77,7 +77,7 @@ This script performs the following main tasks:
     + Files with duplicates removed and only properly paired reads are kept, i.e. **samtools -q 30 -F 1804 -f 2**
 4. **Reads splitting:** Bam files are split into NFR bin (38-100 bp) and MN bin (180-247 bp) using **alignmentSieve** (Deeptools) with **--ATACshift** to produce the shift commonly done for ATAC-seq, i.e. equivalent to –shift 4 -5 5 -4.
 5. **Indexing:** indexes the final BAM files.
-6. **Bigwig coverage tracks:** generates coverage tracks with bin size 1 and 10, the former is RPKM normalized by **bamCoverrage** (Deeptools). Blacklist has been taken into consideration to generate the tracks 
+6. **Bigwig coverage tracks:** generates coverage tracks with bin size 1 and 10, the former is RPKM normalized by **bamCoverrage** (Deeptools). Blacklist has been taken into consideration to generate the tracks. 
 7. **Tag Directories:** generates a sample tag directory using Homer for downstream analysis.
 8. **PEAK call:** macs2 callpeak in NFR bam files and also calculates FRiP scores. 
 9. **GENCODE GTF Version Information:**
@@ -116,6 +116,8 @@ After running the script for all samples, each sample will have its own folder w
 ├── BAM_NMSRT (NMSRT = name sorted)
 │   │   ├── *nmsrt.nodup.NFR.bam
 ├── BW_COVERAGE
+│   ├── *.nodup.bs1.bw
+│   ├── *.nodup.bs10.bw
 │   ├── BW_NFR
 │   │   ├── *.NFR.bs1.bw
 │   │   ├── *.NFR.bs10.bw

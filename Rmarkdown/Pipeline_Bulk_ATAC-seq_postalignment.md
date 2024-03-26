@@ -115,7 +115,7 @@ This script performs the following main tasks:
 6.  **Bigwig coverage tracks:** generates coverage tracks with bin size
     1 and 10, the former is RPKM normalized by **bamCoverrage**
     (Deeptools). Blacklist has been taken into consideration to generate
-    the tracks
+    the tracks.
 7.  **Tag Directories:** generates a sample tag directory using Homer
     for downstream analysis.
 8.  **PEAK call:** macs2 callpeak in NFR bam files and also calculates
@@ -164,6 +164,8 @@ provided script **reorganize_files_atacseq.sh** in the terminal.
     ├── BAM_NMSRT (NMSRT = name sorted)
     │   │   ├── *nmsrt.nodup.NFR.bam
     ├── BW_COVERAGE
+    │   ├── *.nodup.bs1.bw
+    │   ├── *.nodup.bs10.bw
     │   ├── BW_NFR
     │   │   ├── *.NFR.bs1.bw
     │   │   ├── *.NFR.bs10.bw
