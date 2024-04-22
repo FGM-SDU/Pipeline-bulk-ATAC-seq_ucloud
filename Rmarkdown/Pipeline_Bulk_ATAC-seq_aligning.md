@@ -57,7 +57,7 @@ files using AdapterRemoval v2 and align the trimmed fastq files.
 
 3.  **Run the Script:** Submit the script to the SLURM cluster:
 
-        sbatch -J <job_name> path_to/Scripts_folder/pe_align_BWA_sampe_multigenome.sh -g <mm10|mm39|hg38> -t <input-R1_001.fastq.gz-file> 
+        sbatch -J <job_name> path_to/Scripts_folder/pe_align_BWA_sampe_multigenome.sh -g <mm10|mm39|hg38> <input-R1_001.fastq.gz-file> -t 
 
     **Required arguments**
 
@@ -72,7 +72,7 @@ files using AdapterRemoval v2 and align the trimmed fastq files.
 
     For several samples you can use a for loop:
 
-        for i in *R1_001.fastq.gz; do sbatch -J <job_name> path_to/Scripts_folder/pe_align_BWA_sampe_multigenome.sh -g <mm10|mm39|hg38> -t $i; sleep 1; done
+        for i in *R1_001.fastq.gz; do sbatch -J <job_name> path_to/Scripts_folder/pe_align_BWA_sampe_multigenome.sh -g <mm10|mm39|hg38> $i -t; sleep 1; done
 
 4.  **Monitor Job:** You can monitor the job using the SLURM commands,
     such as squeue, scontrol show job <job-id>, and check the log files

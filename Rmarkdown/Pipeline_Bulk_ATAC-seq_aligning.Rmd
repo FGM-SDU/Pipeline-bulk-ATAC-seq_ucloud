@@ -4,6 +4,7 @@ author: "Victor Enrique Goitea"
 date: "2024-03-11"
 output: 
   github_document:
+    html_preview: false
     toc: yes
 ---
 
@@ -44,7 +45,7 @@ This bash script is designed for running a ATAC-seq alignment on a SLURM cluster
 3. **Run the Script:** Submit the script to the SLURM cluster:
 
     ```
-    sbatch -J <job_name> path_to/Scripts_folder/pe_align_BWA_sampe_multigenome.sh -g <mm10|mm39|hg38> -t <input-R1_001.fastq.gz-file> 
+    sbatch -J <job_name> path_to/Scripts_folder/pe_align_BWA_sampe_multigenome.sh -g <mm10|mm39|hg38> <input-R1_001.fastq.gz-file> -t 
     ```
 
     **Required arguments**
@@ -57,7 +58,7 @@ This bash script is designed for running a ATAC-seq alignment on a SLURM cluster
     For several samples you can use a for loop:  
 
     ```
-    for i in *R1_001.fastq.gz; do sbatch -J <job_name> path_to/Scripts_folder/pe_align_BWA_sampe_multigenome.sh -g <mm10|mm39|hg38> -t $i; sleep 1; done
+    for i in *R1_001.fastq.gz; do sbatch -J <job_name> path_to/Scripts_folder/pe_align_BWA_sampe_multigenome.sh -g <mm10|mm39|hg38> $i -t; sleep 1; done
     ```
 
 4.	**Monitor Job:** You can monitor the job using the SLURM commands, such as squeue, scontrol show job <job-id>, and check the log files generated.

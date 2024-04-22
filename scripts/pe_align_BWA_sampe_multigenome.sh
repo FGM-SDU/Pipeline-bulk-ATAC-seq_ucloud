@@ -48,7 +48,7 @@ echo "Samtools sorting conditions: ${SAM_THREADS} threads and ${MEM_SAMTOOLS} G 
 ## Read optional arguments
     
 function usage {
-  echo -e "\n Usage:$(basename $0) -g <genome> -t <input_files>"
+  echo -e "\n Usage:$(basename $0) -g <genome> <input_files> -t"
   echo "Options:"
   echo " -g <genome>        - Specify the genome (mm10, mm39, hg38)"
   echo " -t                 - Specify to trim (optional)"
