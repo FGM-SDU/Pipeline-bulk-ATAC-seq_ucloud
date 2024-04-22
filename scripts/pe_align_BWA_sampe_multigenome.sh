@@ -14,6 +14,10 @@
 
 # run in u1-standard-16 node
 
+# Start runtime
+START=$(date +%s)
+echo -e "\nStarting processing"
+
 #we set OMP_NUM_THREADS to the number of available cores
 echo "Running on $SLURM_CPUS_ON_NODE CPU cores"
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
@@ -130,10 +134,12 @@ else
   TRIMMED2="${INPUT2}"
 fi
 
+# Alignning
+START_SUBPROCESS=$(date +%s)
+
+echo "Aligning and coordinate sorting..."
 echo "Running BWA..."
 
-# Alignning
-echo "Aligning and coordinate sorting..."
 bwa sampe ${REFERENCE} \
   <(bwa aln -t "${OMP_NUM_THREADS}" ${REFERENCE} "${TRIMMED1}") \
   <(bwa aln -t "${OMP_NUM_THREADS}" ${REFERENCE} "${TRIMMED2}") \
@@ -142,19 +148,44 @@ bwa sampe ${REFERENCE} \
   samtools view -@ "${OMP_NUM_THREADS}" -Shu - |  \
   samtools sort -@ "${SAM_THREADS}" -m "${MEM_SAMTOOLS}G" -O bam -o "${PREFIX}.tmp.bam"
 
-echo "Picard AddOrReplaceReadGroups ..."
+END_SUBPROCESS=$(date +%s)
+RUNTIME_SUBPROCESS=$((END_SUBPROCESS-START_SUBPROCESS))
+H=$((RUNTIME_SUBPROCESS / 3600 ))  # Calculate hours
+M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
+S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
+echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
+
+# Add or correct the read group information
+echo "Picard AddOrReplaceReadGroups..."
+START_SUBPROCESS=$(date +%s)
+
 ID=$(zcat "${INPUT1}" | head -n1 | sed 's/:/_/g' |cut -d "_" -f1,2,3,4) ## read group identifier 
 LB=$(echo "${INPUT1}" | cut -d "_" -f1,2)                                ## library ID
 PL="illumina"                                                           ## platform (e.g. illumina, solid)
 PU=$(echo "${ID}"."${LB}")                                                            ##Platform Unit
 SM=$(echo "${INPUT1}" | cut -d"_" -f1)                                          ##sample ID
 
+java -jar $EBROOTPICARD/picard.jar AddOrReplaceReadGroups -I "${PREFIX}.tmp.bam" -O "${PREFIX}.bam" --RGID "${ID}" --RGLB "${LB}" --RGPL "${PL}" --RGPU "${PU}" --RGSM "${SM}" --VALIDATION_STRINGENCY LENIENT --QUIET true --VERBOSITY ERROR 2> "${NAME}.picard.AddOrReplaceReadGroups.error.log"
 
-java -jar $EBROOTPICARD/picard.jar AddOrReplaceReadGroups -I "${PREFIX}.tmp.bam" -O "${PREFIX}.bam" --RGID "${ID}" --RGLB "${LB}" --RGPL "${PL}" --RGPU "${PU}" --RGSM "${SM}" --VALIDATION_STRINGENCY LENIENT --QUIET true --VERBOSITY ERROR
+END_SUBPROCESS=$(date +%s)
+RUNTIME_SUBPROCESS=$((END_SUBPROCESS-START_SUBPROCESS))
+H=$((RUNTIME_SUBPROCESS / 3600 ))  # Calculate hours
+M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
+S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
+echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-
+# Generate a index of the bam file
 echo "Indexing..."
+START_SUBPROCESS=$(date +%s)
+
 samtools index -b "${PREFIX}.bam" "${PREFIX}.bai"
+
+END_SUBPROCESS=$(date +%s)
+RUNTIME_SUBPROCESS=$((END_SUBPROCESS-START_SUBPROCESS))
+H=$((RUNTIME_SUBPROCESS / 3600 ))  # Calculate hours
+M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
+S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
+echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
 # Deleting temporary files
 if [ "${INCLUDE_TRIMMING}" = true ]; then
@@ -164,5 +195,13 @@ else
 fi
 
 module unload AdapterRemoval BWA SAMtools picard
+
+# Finalize
+END=$(date +%s)
+RUNTIME=$((END-START))
+H=$((RUNTIME / 3600 ))  # Calculate hours
+M=$(( (RUNTIME / 60 ) % 60 ))  # Calculate minutes
+S=$(( RUNTIME % 60 ))  # Calculate seconds
+echo -e "\tProcessing completed. Total run time: ${H} hours, ${M} minutes, and ${S} seconds."
 
 echo "... Done!!!"

@@ -235,7 +235,6 @@ BIGWIG_COVERAGE_BIN_MN="$(basename "${RAW_BAM_FILE}" bam)MN.bs10.bw"  # mono-nuc
 # Commands
 
 module load SAMtools
-
 echo "Samtools QC..."
 START_SUBPROCESS=$(date +%s)
 
@@ -250,9 +249,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-module unload SAMtools
 module load Qualimap
-
 echo "qualimap..." 
 START_SUBPROCESS=$(date +%s)
 
@@ -264,9 +261,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-module unload Qualimap
 module load SAMtools R picard BEDTools
-
 echo "Picard QC..."
 START_SUBPROCESS=$(date +%s)
 
@@ -337,6 +332,7 @@ echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 # Mark duplicates
 # Insert Size
 # ====================================
+module load SAMtools R picard
 echo "Fixing Coodinates and sorting: filter chrM, random and chrUn..."
 START_SUBPROCESS=$(date +%s)
 
@@ -414,7 +410,6 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-
 module load deepTools
 echo "Filtering-Split into nucleosomal-free bin 38-100 bp and nucleosomal bin 180-247 bp bin..."
 START_SUBPROCESS=$(date +%s)
@@ -422,6 +417,7 @@ START_SUBPROCESS=$(date +%s)
 alignmentSieve -b ${NODUP_BAM_FILE} -o ${TMP_BAM_NFR} -p "${OMP_NUM_THREADS}" --ATACshift --minFragmentLength 38 --maxFragmentLength 100
 alignmentSieve -b ${NODUP_BAM_FILE} -o ${TMP_BAM_MN} -p "${OMP_NUM_THREADS}" --ATACshift --minFragmentLength 180 --maxFragmentLength 247
 
+module load SAMtools
 echo "Filtering-Split into nucleosomal-free bin 38-100 bp and nucleosomal bin 180-247 bp bin...Sorting"
 samtools sort -@ "${SAM_THREADS}" -m "${MEM_SAMTOOLS}G" -o ${BAM_NFR} ${TMP_BAM_NFR}
 rm ${TMP_BAM_NFR}
@@ -449,6 +445,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
+module load deepTools
 echo "Deeptools QC..."
 START_SUBPROCESS=$(date +%s)
 
@@ -469,6 +466,7 @@ READS=10000000
 TMP_DOWN_BAM="${NAME}.10M.tmp.bam" # 10 million mates/pairs (fragments), i.e. x2 # reads
 TMP_DOWN_BAM_INDEX="${NAME}.10M.tmp.bai"
 
+module load SAMtools deepTools
 # Calculate FRACTION for each target BAM file
 FRACTION=$(samtools idxstats "${FINAL_MARKDUP_BAM_FILE}" | cut -f3 | awk -v ct=${READS} 'BEGIN {total=0} {total += $1} END {print ct/total}')
 echo "Fraction for target ${FINAL_MARKDUP_BAM_FILE} = ${FRACTION}"
@@ -490,9 +488,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-module unload deepTools SAMtools R picard BEDTools preseq
 module load R/4.1.2-foss-2021b Phantompeakqualtools
-
 echo "Phantompeakqualtools QC..."
 START_SUBPROCESS=$(date +%s)
 
@@ -515,9 +511,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-module unload R/4.1.2-foss-2021b Phantompeakqualtools
 module load deepTools
-
 echo "Deeptools Coverages Profiles..."
 START_SUBPROCESS=$(date +%s)
 
@@ -551,8 +545,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-module unload deepTools
-module load SAMtools Homer
+module load SAMtools/1.14-GCC-11.2.0 Homer
 
 echo "HOMER: Making TagDirectory..."
 START_SUBPROCESS=$(date +%s)
@@ -565,8 +558,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-module unload SAMtools Homer
-module load SAMtools MACS2
+module load SAMtools/1.14-GCC-11.2.0 MACS2
 
 echo "MACS2: Calling peaks..."
 START_SUBPROCESS=$(date +%s)
@@ -588,7 +580,6 @@ MACS2_OUTPUT_DIR="${NAME}_peaks_NFR"
 
 macs2 callpeak -g ${GENOME_SZ} -f BAMPE --keep-dup all -t ${BAM_NFR} -n "${NAME}.NFR" --outdir ${MACS2_OUTPUT_DIR} --verbose 2 2> "${NAME}.macs2.callpeak.log"
 
-module unload MACS2
 module load SAMtools BEDTools
 
 # Extract the total number of peaks from the MACS2 output
