@@ -56,7 +56,7 @@ function usage {
   exit 1
 }
 
-while getopts g:a:h opt; do
+while getopts g:t:h opt; do
     case "${opt}" in
       g) GENOME="${OPTARG}"
       ;;
