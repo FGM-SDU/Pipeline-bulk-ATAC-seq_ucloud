@@ -503,7 +503,7 @@ Rscript --max-ppsize=500000 -e "load('${PHANTOMPEAKS_RDATA}'); write.table(cross
 
 # Prepare files for reporting NSC and RSC coefficients
 SPP_NSC_RSC="${NAME}.phantom.qc.spp.coeff_mqc.tsv"
-awk -v OFS='\t' '{print "${NAME}", $9,$10}' ${PHANTOMPEAKS_METRICS_TOP} | cat ${HEADER_SPP_METRICS} - > "${SPP_NSC_RSC}"
+awk -v NAME="${NAME}" -v OFS='\t' '{print NAME, $9,$10}' ${PHANTOMPEAKS_METRICS_TOP} | cat ${HEADER_SPP_METRICS} - > "${SPP_NSC_RSC}"
 
 RUNTIME_SUBPROCESS=$((END_SUBPROCESS-START_SUBPROCESS))
 H=$((RUNTIME_SUBPROCESS / 3600 ))  # Calculate hours
