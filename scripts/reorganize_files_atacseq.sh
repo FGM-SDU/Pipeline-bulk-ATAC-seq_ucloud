@@ -49,7 +49,6 @@ BAM_NFR=BAM_NFR && mkdir -p "${BAM_NFR}"
 BAM_MN=BAM_MN && mkdir -p "${BAM_MN}"
 
 mv *nodup.NFR.ba* "${BAM_NFR}"
-mv *peaks* "${BAM_NFR}"	
 mv *nodup.MN.ba* "${BAM_MN}"
 
 chmod 770 ./*
@@ -102,6 +101,8 @@ mv *pbc* "${QC_PBC}"	# QC file library complexity
 							# "TotalReadPairs \tDistinctReadPairs \tOneReadPairTwoReadPairs \tNRF=Distinct/Total \tPBC1=OnePair/Distinct \tPBC2=OnePair/TwoPair"
 mv *coveragePlot* "${QC_Deeptools}"	# QC files deeptools: plotFingerprint; plotCoverage; estimateReadFiltering.py
 mv *fingerprints* "${QC_Deeptools}" # QC files deeptools: plotFingerprint; plotCoverage; estimateReadFiltering.py
+mv *matrix.scaled* "${QC_Deeptools}" # QC deeptools: scale-regions "GENES" +/- 3kb TSS/TES
+mv *plotprofile* "${QC_Deeptools}" # QC deeptools: plotprofile of the computed matrix.
 mv *estimatereadfiltering* "${QC_Deeptools}" # QC files deeptools: plotFingerprint; plotCoverage; estimateReadFiltering
 mv *bamqc "${QC_BAMQC}" # QC files bamqc from qualimap
 mv *phantom* "${QC_PHANTOMPEAKS}" # QC files phantompeakqualtools
