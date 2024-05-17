@@ -23,7 +23,7 @@ Runs BWA sampe.
 3. [**Postalignment of BAM files**](https://github.com/FGM-SDU/Pipeline-bulk-ATAC-seq_ucloud/blob/main/Rmarkdown/Pipeline_Bulk_ATAC-seq_postalignment.md)
 Computes several QC metrics, reads filtering and splitting, peak calling and FRiP scores.
 
-4. [**Organize files by category**](https://github.com/FGM-SDU/Pipeline-bulk-ATAC-seq_ucloud/blob/main/Rmarkdown/Pipeline_Bulk_ATAC-seq_postalignment.md)
+4. [**Organize files by category**](https://github.com/FGM-SDU/Pipeline-bulk-ATAC-seq_ucloud/blob/main/Rmarkdown/Pipeline_Bulk_ATAC-seq_postalignment.md#output-files-reorganization-optional)
 
 ## General Usage
 

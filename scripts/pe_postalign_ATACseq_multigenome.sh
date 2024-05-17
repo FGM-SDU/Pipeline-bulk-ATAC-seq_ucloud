@@ -545,7 +545,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-module load SAMtools/1.14-GCC-11.2.0 Homer
+module load SAMtools/1.15.1-GCC-11.2.0 Homer
 
 echo "HOMER: Making TagDirectory..."
 START_SUBPROCESS=$(date +%s)
@@ -558,7 +558,7 @@ M=$(((RUNTIME_SUBPROCESS / 60 ) % 60 ))  # Calculate minutes
 S=$((RUNTIME_SUBPROCESS % 60 ))  # Calculate seconds
 echo -e "Status: Done! Used ${H} hours, ${M} minutes, and ${S} seconds."
 
-module load SAMtools/1.14-GCC-11.2.0 MACS2
+module load SAMtools/1.15.1-GCC-11.2.0 MACS2
 
 echo "MACS2: Calling peaks..."
 START_SUBPROCESS=$(date +%s)
